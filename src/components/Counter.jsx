@@ -1,18 +1,18 @@
 import Button from "./Button";
 
-function Counter({ dCb, iCb, v, visible }) {
+function Counter({ decrementCallback, incrementCallback, value, visible }) {
   return (
     <div className="counter" style={{ display: visible ? "flex" : "none" }}>
       <Button
         classes="decrement"
-        onClick={dCb}
+        onClick={decrementCallback}
         ariaLabel="Decrease quantity"
         text="-"
       />
-      <span>{v}</span>
+      <span>{value}</span>
       <Button
         classes="increment"
-        onClick={iCb}
+        onClick={incrementCallback}
         ariaLabel="Increase quantity"
         text="+"
       />
