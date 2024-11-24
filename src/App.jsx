@@ -1,12 +1,12 @@
-import data from './data'
-import Header from './components/Header'
-import Menu from './components/Menu'
+import LoginPage from "./components/LoginPage";
+import MenuPage from "./components/MenuPage";
 
 function App() {
-  return (<>
-  <Header/>
-  <Menu data={data}/>
-  </>)
+  return (
+    <>
+      <MenuPage />
+    </>
+  );
 }
 
-export default App
+export default App;
