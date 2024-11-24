@@ -1,10 +1,17 @@
-
-function Header({username}) {
-    return(<header>
-        <div class="logo">PIZZA DAY</div>
-        <input type="text" class="search-bar" placeholder="Search for the order #"/>
-        <div class="username">{username ? username.toUpperCase() : "USERNAME"}</div>
-    </header>)
+function Header({ username }) {
+  return (
+    <header>
+      <div className="logo">PIZZA DAY</div>
+      <input
+        type="text"
+        className="search-bar"
+        placeholder="Search for the order #"
+      />
+      <div className="username">
+        {username ? username.toUpperCase() : "USERNAME"}
+      </div>
+    </header>
+  );
 }
 
-export default Header
+export default Header;

@@ -2,7 +2,7 @@ import Item from './Item'
 
 function Menu({data}) {
     return (
-      <div class="menu-container">
+      <div className="menu-container">
         {data.map((itemInfo) => <Item itemInfo={itemInfo} key={itemInfo.id}/>)}
       </div>
     );

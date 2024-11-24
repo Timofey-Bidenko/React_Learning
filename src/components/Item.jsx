@@ -1,4 +1,4 @@
-import Button from './Button'
+import CartControls from "./CartControls";
 
 function capitalize(str) {
   return str
@@ -22,17 +22,15 @@ function Item({ itemInfo }) {
   const ingridients = capitalize(ingridientsString);
 
   return (
-    <div class="pizza-item">
-      <img src={img} alt={name + " Pizza"} class="pizza-image" />
-      <div class="pizza-info">
+    <div className="pizza-item">
+      <img src={img} alt={name + " Pizza"} className="pizza-image" />
+      <div className="pizza-info">
         <h2>{name}</h2>
-        <p class="ingredients">{ingridients}</p>
-        {!itemInfo["soldOut"] && <p class="price">{price}</p>}
-        {itemInfo["soldOut"] && <p class="sold-out">SOLD OUT</p>}
+        <p className="ingredients">{ingridients}</p>
+        {!itemInfo["soldOut"] && <p className="price">{price}</p>}
+        {itemInfo["soldOut"] && <p className="sold-out">SOLD OUT</p>}
       </div>
-      {!itemInfo["soldOut"] && (
-        <Button classes="add-to-cart" text="ADD TO CART" />
-      )}
+      {!itemInfo["soldOut"] && <CartControls />}
     </div>
   );
 }
