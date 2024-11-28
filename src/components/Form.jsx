@@ -2,7 +2,7 @@ import { useState } from "react";
 import Input from "./Input";
 import Button from "./Button";
 
-const Form = ({ title, subtitle, text }) => {
+function Form({ title, subtitle, text }) {
   const [username, setUsername] = useState("");
 
   function handleFormSubmit(e) {
@@ -26,6 +26,6 @@ const Form = ({ title, subtitle, text }) => {
       <Button onClick={handleFormSubmit} text="Start Order"></Button>
     </main>
   );
-};
+}
 
 export default Form;

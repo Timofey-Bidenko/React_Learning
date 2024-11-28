@@ -1,4 +1,4 @@
-const Input = ({ value = "", onChange, type = "text", placeholder = "" }) => {
+function Input({ value = "", onChange, type = "text", placeholder = "" }) {
   return (
     <input
       value={value}
@@ -8,6 +8,6 @@ const Input = ({ value = "", onChange, type = "text", placeholder = "" }) => {
       aria-label={placeholder}
     />
   );
-};
+}
 
 export default Input;

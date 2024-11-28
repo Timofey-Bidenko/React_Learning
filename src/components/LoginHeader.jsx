@@ -1,9 +1,9 @@
-const LoginHeader = ({ classes, text }) => {
+function LoginHeader({ classes, text }) {
   return (
     <header>
       <div className={classes}>{text}</div>
     </header>
   );
-};
+}
 
 export default LoginHeader;

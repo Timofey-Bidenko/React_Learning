@@ -1,4 +1,4 @@
-function MenuHeader({ username }) {
+function Header({ username }) {
   return (
     <header>
       <div className="logo">PIZZA DAY</div>
@@ -14,4 +14,4 @@ function MenuHeader({ username }) {
   );
 }
 
-export default MenuHeader;
+export default Header;

@@ -1,13 +1,12 @@
-import "../Menu.css";
-import data from "../data";
-import MenuHeader from "./MenuHeader";
+import MenuData from "../MenuData";
+import Header from "./Header";
 import Menu from "./Menu";
 
 function MenuPage() {
   return (
     <>
-      <MenuHeader />
-      <Menu data={data} />
+      <Header />
+      <Menu data={MenuData} />
     </>
   );
 }

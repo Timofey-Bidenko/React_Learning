@@ -1,10 +1,10 @@
-const Button = ({
+function Button({
   classes = "btn",
   onClick = () => {},
   visible = true,
   ariaLabel = "Button",
   text = "Click",
-}) => {
+}) {
   return (
     <button
       className={classes}
@@ -15,6 +15,6 @@ const Button = ({
       {text}
     </button>
   );
-};
+}
 
 export default Button;

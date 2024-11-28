@@ -1,8 +1,7 @@
-import "../Login.css";
 import LoginHeader from "./LoginHeader";
 import Form from "./Form";
 
-const LoginPage = () => {
+function LoginPage() {
   return (
     <>
       <LoginHeader classes="logo" text="PIZZA DAY"></LoginHeader>
@@ -13,6 +12,6 @@ const LoginPage = () => {
       />
     </>
   );
-};
+}
 
 export default LoginPage;
