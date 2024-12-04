@@ -3,7 +3,7 @@ import CartItems from "../components/CartItems";
 import CartActions from "../components/CartActions";
 import { NavLink } from "react-router";
 import { useContext } from "react";
-import { UserContext } from "../App";
+import { UserContext } from "../context/UserContext";
 
 import "../Cart.css";
 
@@ -15,7 +15,7 @@ function CartPage() {
         ← Back to menu
       </NavLink>
       <h1 className="cart-title">
-        Your cart, {username ? username.toLowerCase() : "username"}
+        Your cart{username ? ", " + username.toLowerCase() : " ⤵️"}
       </h1>
       <CartItems data={data} />
       <CartActions />

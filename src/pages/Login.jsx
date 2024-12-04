@@ -2,7 +2,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { useNavigate } from "react-router";
 import { useContext } from "react";
-import { UserContext } from "../App";
+import { UserContext } from "../context/UserContext";
 
 import "../Login.css";
 

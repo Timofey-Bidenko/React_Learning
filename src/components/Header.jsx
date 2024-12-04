@@ -1,11 +1,13 @@
 import { useLocation } from "react-router";
 import Navigate from "./Navigate";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
-function Header({ username }) {
+function Header() {
   const { pathname } = useLocation();
   const onHomepage = pathname !== "/menu" && pathname !== "/cart";
 
-  // console.log(pathname, onHomepage);
+  const { username } = useContext(UserContext);
 
   return (
     <header>
