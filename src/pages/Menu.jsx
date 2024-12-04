@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import Item from "./Item";
+import Item from "../components/Item";
 
-function Menu() {
+import "../Menu.css";
+
+function MenuPage() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -20,7 +22,7 @@ function Menu() {
       }
     };
 
-    getData()
+    getData();
   }, []);
 
   return (
@@ -32,4 +34,4 @@ function Menu() {
   );
 }
 
-export default Menu;
+export default MenuPage;

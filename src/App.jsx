@@ -1,16 +1,36 @@
-import LoginPage from "./components/LoginPage";
-import MenuPage from "./components/MenuPage";
-import CartPage from "./components/CartPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/Login";
+import MenuPage from "./pages/Menu";
+import CartPage from "./pages/Cart";
 
-import "./Menu.css"; // Change upon changing the page (Has to be done here, to prevent css conflicts)
-// When using LoginPage, you need to add class="container" to the root div in index.html
-// When using a different page, remove class="container" from the root div in index.html
+import "./index.css";
+import Header from "./components/Header";
+import { createContext, useState } from "react";
+
+export const UserContext = createContext(null);
 
 function App() {
+  const [username, setUsername] = useState("");
+
+  const userValue = {
+    "username": username,
+    "setUsername": setUsername,
+  };
+
   return (
-    <>
-      <MenuPage />
-    </>
+    <Router>
+      <UserContext.Provider value={userValue}>
+        <Header username={username} />
+        <>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/menu" element={<MenuPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="*" element={<LoginPage />} />
+          </Routes>
+        </>
+      </UserContext.Provider>
+    </Router>
   );
 }
 

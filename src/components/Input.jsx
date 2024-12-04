@@ -1,6 +1,7 @@
-function Input({ value = "", onChange, type = "text", placeholder = "" }) {
+function Input({ value = "", classes="", onChange, type = "text", placeholder = "" }) {
   return (
     <input
+      className={classes}
       value={value}
       onChange={onChange}
       type={type}

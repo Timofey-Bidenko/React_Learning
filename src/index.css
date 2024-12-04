@@ -1,0 +1,20 @@
+.NavWrapHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.NavWrapHeader a {
+    display: inline-flex;
+    border-radius: 8px;
+    justify-content: center;
+    padding: 2px 4px;
+    text-decoration: none;
+    color: #4A90E2;
+}
+
+.NavWrapHeader a.active {
+    background-color: #FDB913;
+    border: 1px solid #e5a700;
+    color: black;
+}
