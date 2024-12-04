@@ -14,14 +14,12 @@ function App() {
     <Router>
       <UserContextProvider>
         <Header />
-        <>
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/menu" element={<MenuPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="*" element={<LoginPage />} />
-          </Routes>
-        </>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/menu" element={<MenuPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="*" element={<LoginPage />} />
+        </Routes>
       </UserContextProvider>
     </Router>
   );
