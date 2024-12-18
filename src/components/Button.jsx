@@ -4,6 +4,7 @@ function Button({
   visible = true,
   ariaLabel = "Button",
   text = "Click",
+  type = "",
 }) {
   return (
     <button
@@ -11,6 +12,7 @@ function Button({
       onClick={onClick}
       style={{ display: visible ? "block" : "none" }}
       aria-label={ariaLabel}
+      type={type}
     >
       {text}
     </button>

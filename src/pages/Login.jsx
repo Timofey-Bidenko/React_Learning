@@ -7,17 +7,20 @@ import { UserContext } from "../context/UserContext";
 import "../Login.css";
 
 function LoginPage() {
-  const { username, setUsername } = useContext(UserContext);
+  const { setUsername } = useContext(UserContext);
   const navigate = useNavigate();
+
+  let lastInput = ""
 
   function handleFormSubmit(e) {
     e.preventDefault();
-    console.log("Username ~>", username);
+    setUsername(lastInput);
+    console.log("Username ~>", lastInput);
     navigate("/menu");
   }
 
   function handleInputChange(e) {
-    setUsername(e.target.value);
+    lastInput = e.target.value;
   }
   return (
     <main>
@@ -28,7 +31,6 @@ function LoginPage() {
       </p>
       <Input
         classes="loginInput"
-        value={username}
         onChange={handleInputChange}
         placeholder="Your full name"
       ></Input>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status - Pizza Day</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .order-title {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .badge-priority {
+            background-color: #dc3545;
+        }
+
+        .badge-preparing {
+            background-color: #28a745;
+        }
+
+        .time-banner {
+            background-color: #f0f0f0;
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .time-left {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .estimated-time {
+            color: #666;
+        }
+
+        .order-details {
+            margin-bottom: 2rem;
+        }
+
+        .pizza-item {
+            margin-bottom: 1rem;
+        }
+
+        .pizza-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .pizza-name {
+            font-size: 1.2rem;
+        }
+
+        .pizza-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .ingredients {
+            color: #666;
+            font-style: italic;
+        }
+
+        .price-breakdown {
+            background-color: #f0f0f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .price-item {
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .price-label {
+            color: #444;
+        }
+
+        .price-value {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="order-title">Order #5T460L status: preparing</h1>
+            <div class="badges">
+                <span class="badge badge-priority">PRIORITY</span>
+                <span class="badge badge-preparing">PREPARING ORDER</span>
+            </div>
+        </div>
+
+        <div class="time-banner">
+            <div class="time-left">
+                Only 49 minutes left 😃
+            </div>
+            <div class="estimated-time">
+                (Estimated delivery: Dec 12, 01:37 PM)
+            </div>
+        </div>
+
+        <div class="order-details">
+            <div class="pizza-item">
+                <div class="pizza-header">
+                    <span class="pizza-name">1× Margherita</span>
+                    <span class="pizza-price">€12.00</span>
+                </div>
+                <div class="ingredients">
+                    Tomato, Mozzarella, Basil
+                </div>
+            </div>
+        </div>
+
+        <div class="price-breakdown">
+            <div class="price-item">
+                <span class="price-label">Price pizza:</span>
+                <span class="price-value">€12.00</span>
+            </div>
+            <div class="price-item">
+                <span class="price-label">Price priority:</span>
+                <span class="price-value">€2.00</span>
+            </div>
+            <div class="price-item">
+                <span class="price-label">To pay on delivery:</span>
+                <span class="price-value">€14.00</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
