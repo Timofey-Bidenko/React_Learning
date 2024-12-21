@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 import Counter from "./Counter";
+
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 function capitalize(str) {
   return str
@@ -14,11 +17,39 @@ function Item({ itemInfo }) {
   const img = itemInfo.imageUrl ?? "/placeholder.svg?height=100&width=100";
   const price = itemInfo.unitPrice ? `€${itemInfo.unitPrice}.00` : "€123.00";
   const ingredients = capitalize(itemInfo.ingredients.join(", "));
+  const itemId = itemInfo.id;
 
   const [amount, setAmount] = useState(0);
+  const { cart, dispatchCart } = useContext(CartContext);
 
-  const handleIncrement = () => setAmount((last) => last + 1);
-  const handleDecrement = () => setAmount((last) => Math.max(last - 1, 0));
+  const addToCart = () => {
+    setAmount(1);
+    dispatchCart({ type: "Add", payload: {
+      name: itemInfo.name,
+      id: itemId,
+      price: itemInfo.unitPrice,
+    } });
+  };
+  const handleIncrement = () => {
+    setAmount((last) => last + 1);
+    dispatchCart({ type: "Increment", payload: {id: itemId}});
+  };
+  const handleDecrement = () => {
+    if (amount === 1) {
+      setAmount(0)
+      dispatchCart({ type: "Remove", payload: {id: itemId}});
+    } else {
+      setAmount((last) => Math.max(last - 1, 1))
+      dispatchCart({ type: "Decrement", payload: {id: itemId}});
+    }
+  };
+
+  useEffect(() => {
+    const cartItem = cart.find((item) => item.id === itemId);
+    if (cartItem) {
+      setAmount(cartItem.quantity);
+    }
+  }, []);
 
   return (
     <div className="pizza-item">
@@ -37,7 +68,7 @@ function Item({ itemInfo }) {
           <Button
             classes="add-to-cart"
             text="ADD TO CART"
-            onClick={handleIncrement}
+            onClick={addToCart}
             visible={amount <= 0}
           />
           <Counter

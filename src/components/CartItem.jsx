@@ -1,28 +1,46 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import QuantityControls from "./QuantityControls";
+
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 function CartItem({ itemInfo }) {
   const name = itemInfo.name ?? "ItemName";
   const price = itemInfo.price ? parseInt(itemInfo.price) : 123;
   const quantity = itemInfo.quantity ? parseInt(itemInfo.quantity) : 1;
+  const itemId = itemInfo.id;
 
-  const [amount, setAmount] = useState(quantity);
+  const { dispatchCart } = useContext(CartContext);
+
+  const handleRemove = () => {
+    dispatchCart({ type: "Remove", payload: {id: itemId}});
+  }
   const handleIncrement = () => {
-    setAmount((last) => last + 1);
+    dispatchCart({
+      type: "Increment",
+      payload: {
+        id: itemId
+      }
+    })
   };
   const handleDecrement = () => {
-    setAmount((last) => Math.max(last - 1, 1));
+    if (quantity === 1) {
+      handleRemove()
+    } else {
+      dispatchCart({ type: "Decrement", payload: {id: itemId}});
+    }
   };
   
   return (
     <div className="cart-item">
-      <span className="quantity-text">{amount}×</span>
+      <span className="quantity-text">{quantity}×</span>
       <span>{name}</span>
-      <span className="price">€{price * amount}.00</span>
+      <span className="price">€{price * quantity}.00</span>
       <QuantityControls
         decrementCallback={handleDecrement}
         incrementCallback={handleIncrement}
-        value={amount}
+        deleteCallback={handleRemove}
+        value={quantity}
       />
     </div>
   );

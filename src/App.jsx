@@ -10,14 +10,14 @@ import "./index.css";
 import Header from "./components/Header";
 
 import UserContextProvider from "./context/UserContext";
-import OrderContextProvider from "./context/OrderContext";
+import CartContextProvider from "./context/CartContext";
 
 function App() {
   return (
     <Router>
       <UserContextProvider>
-        <Header />
-        <OrderContextProvider>
+        <CartContextProvider>
+          <Header />
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="/menu" element={<MenuPage />} />
@@ -26,7 +26,7 @@ function App() {
             <Route path="/orders/:id" element={<OrderStatus />} />
             <Route path="*" element={<LoginPage />} />
           </Routes>
-        </OrderContextProvider>
+        </CartContextProvider>
       </UserContextProvider>
     </Router>
   );

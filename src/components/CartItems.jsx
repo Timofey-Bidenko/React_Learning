@@ -1,9 +1,14 @@
 import CartItem from "./CartItem";
 
-function CartItems({ data }) {
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
+
+function CartItems() {
+  const { cart } = useContext(CartContext);
+
   return (
     <div className="cart-items">
-      {data.map((itemInfo) => (
+      {cart.map((itemInfo) => (
         <CartItem itemInfo={itemInfo} key={itemInfo.id} />
       ))}
     </div>
