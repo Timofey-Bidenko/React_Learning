@@ -10,7 +10,7 @@ function CartActions() {
   const { cart, dispatchCart } = useContext(CartContext);
 
   function goToOrder() {
-    navigate("/orders");
+    navigate("/order");
   }
 
   function clearCart() {

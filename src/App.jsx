@@ -22,7 +22,7 @@ function App() {
             <Route path="/" element={<LoginPage />} />
             <Route path="/menu" element={<MenuPage />} />
             <Route path="/cart" element={<CartPage />} />
-            <Route path="/orders" element={<OrderForm />} />
+            <Route path="/order" element={<OrderForm />} />
             <Route path="/orders/:id" element={<OrderStatus />} />
             <Route path="*" element={<LoginPage />} />
           </Routes>

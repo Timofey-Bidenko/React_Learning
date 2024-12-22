@@ -1,4 +1,3 @@
-import { useState } from "react";
 import QuantityControls from "./QuantityControls";
 
 import { useContext } from "react";

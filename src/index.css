@@ -18,3 +18,7 @@
     border: 1px solid #e5a700;
     color: black;
 }
+
+.error {
+    color: hsl(0, 98.30%, 53.30%);
+}

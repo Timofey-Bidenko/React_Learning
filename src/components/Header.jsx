@@ -6,9 +6,8 @@ import { UserContext } from "../context/UserContext";
 function Header() {
   const { pathname } = useLocation();
   const onHomepage = pathname !== "/menu" && pathname !== "/cart";
-  const showHeader = pathname !== "/orders" && pathname !== "orders/*";
-  console.log(pathname, showHeader);
-  
+  const showHeader = pathname !== "/order" && !pathname.startsWith("/orders/");
+  //console.log(pathname, showHeader);
 
   const { username } = useContext(UserContext);
 

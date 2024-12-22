@@ -1,59 +1,183 @@
-import Input from "../components/Input";
-import Button from "../components/Button"
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import useFetch from "../hooks/useFetch";
+import useIsoDate from "../hooks/useIsoDate";
+import capitalize from "../utils/capitalize";
+import Button from "../components/Button";
+
+// import { useContext } from "react";
+// import { UserContext } from "../context/UserContext";
 
 import "../OrderStatus.css";
 
-function OrderForm() {
-  const { username } = useContext(UserContext);
+function OrderStatus() {
+  const { id } = useParams();
+  const url = "https://react-fast-pizza-api.onrender.com/api/order/" + id;
+  const [data, error, isLoading] = useFetch(url);
+
+  const [estimatedDeliveryTime, setEstimatedDeliveryTime] = useState(null);
+  const [timeLeft, setTimeLeft] = useState("");
+  const [showError, setShowError] = useState(false);
+  const [onCooldown, setOnCooldown] = useState(false);
+  const [isPriority, setIsPriority] = useState(false);
+
+  const [menuData, menuError, menuLoading] = useFetch(
+    "https://react-fast-pizza-api.onrender.com/api/menu"
+  ); // use menu data to get pizza ingredients
+
+  // Update estimatedDeliveryTime when data changes
+  useEffect(() => {
+    if (data?.data?.estimatedDelivery) {
+      setEstimatedDeliveryTime(data.data.estimatedDelivery);
+    }
+    if (data?.data?.priority) {
+      setIsPriority(data.data.priority);
+    }
+  }, [data]);
+  const [formattedDate, dateError, dateLoading] = useIsoDate(
+    estimatedDeliveryTime
+  );
+
+  useEffect(() => {
+    if (estimatedDeliveryTime) {
+      const deliveryDate = new Date(estimatedDeliveryTime);
+      const currentDate = new Date();
+      const timeDiff = deliveryDate - currentDate;
+
+      if (timeDiff > 0) {
+        const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const timeLeftString = `${
+          hours > 0 ? `${hours} ` + (hours % 10 === 1 ? "hour" : "hours") : ""
+        } ${minutes} ${minutes % 10 === 1 ? "minute" : "minutes"}`;
+        setTimeLeft(`Only ${timeLeftString} left 😃`);
+      } else {
+        setTimeLeft("Order should have arrived");
+      }
+    }
+  }, [estimatedDeliveryTime]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error || !data || !data.data) {
+    return <p className="error">Something went wrong. Please try again.</p>;
+  }
+
+  const { customer, status, priority, cart, orderPrice, priorityPrice } = data.data;
+
+  async function prioritize() {
+    setOnCooldown(true);
+    setShowError(false);
+
+    const response = await fetch(
+      "https://react-fast-pizza-api.onrender.com/api/order/" + id,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          priority: true,
+        }),
+      }
+    );
+
+    const responseData = await response.json();
+
+    if (responseData.status === "success") {
+      setIsPriority(responseData.data.priority);
+    } else {
+      setShowError(true);
+      setOnCooldown(false);
+    }
+  }
   return (
-    <div class="container">
-        <div class="header">
-            <h1 class="order-title">Order #5T460L status: preparing</h1>
-            <div class="badges">
-                <span class="badge badge-priority">PRIORITY</span>
-                <span class="badge badge-preparing">PREPARING ORDER</span>
+    <div className="container">
+      {!isLoading && (
+        <>
+          <div className="header">
+            <h1 className="order-title">
+              Order #{id} status: {status}
+            </h1>
+            <div className="badges">
+              {isPriority && (
+                <span className="badge badge-priority">PRIORITY</span>
+              )}
+              <span className="badge badge-preparing">
+                {status.toUpperCase()} ORDER
+              </span>
             </div>
-        </div>
+          </div>
 
-        <div class="time-banner">
-            <div class="time-left">
-                Only 49 minutes left 😃
+          <div className="time-banner">
+            <div className="time-left">{timeLeft}</div>
+            <div className="estimated-time">
+              (Estimated delivery:{" "}
+              {dateLoading ? "Loading..." : formattedDate || "Error"})
             </div>
-            <div class="estimated-time">
-                (Estimated delivery: Dec 12, 01:37 PM)
-            </div>
-        </div>
+          </div>
 
-        <div class="order-details">
-            <div class="pizza-item">
-                <div class="pizza-header">
-                    <span class="pizza-name">1× Margherita</span>
-                    <span class="pizza-price">€12.00</span>
+          <div className="order-details">
+            {cart.map((item, index) => (
+              <div className="pizza-item" key={index}>
+                <div className="pizza-header">
+                  <span className="pizza-name">
+                    {item.quantity}× {item.name}
+                  </span>
+                  <span className="pizza-price">€{item.totalPrice}.00</span>
                 </div>
-                <div class="ingredients">
-                    Tomato, Mozzarella, Basil
+                <div className="ingredients">
+                  {menuLoading
+                    ? "Loading..."
+                    : menuData
+                    ? capitalize(
+                        menuData.data
+                          .find((pizza) => pizza.id === item.pizzaId)
+                          .ingredients.join(", ")
+                      )
+                    : "Error"}
                 </div>
-            </div>
-        </div>
+              </div>
+            ))}
+          </div>
 
-        <div class="price-breakdown">
-            <div class="price-item">
-                <span class="price-label">Price pizza:</span>
-                <span class="price-value">€12.00</span>
+          <div className="price-breakdown">
+            <div className="price-item">
+              <span className="price-label">Price pizza:</span>
+              <span className="price-value">€{orderPrice}.00</span>
             </div>
-            <div class="price-item">
-                <span class="price-label">Price priority:</span>
-                <span class="price-value">€2.00</span>
+            {isPriority && (
+              <div className="price-item">
+                <span className="price-label">Price priority:</span>
+                <span className="price-value">€{priorityPrice}.00</span>
+              </div>
+            )}
+            <div className="price-item">
+              <span className="price-label">To pay on delivery:</span>
+              <span className="price-value">
+                €{orderPrice + (isPriority ? priorityPrice : 0)}.00
+              </span>
             </div>
-            <div class="price-item">
-                <span class="price-label">To pay on delivery:</span>
-                <span class="price-value">€14.00</span>
-            </div>
-        </div>
+          </div>
+
+          {!isPriority && !onCooldown && (
+            <>
+              {showError && (
+                <p className="error">Something went wrong. Please try again.</p>
+              )}
+              <Button
+                onClick={prioritize}
+                text="Prioritize"
+                classes="add-to-cart duration-400 hover:cursor-pointer text-sm focus:ring inline-block rounded-xl bg-yellow-500 font-semibold uppercase tracking-wide text-slate-800 transition-colors hover:bg-yellow-400 focus:bg-yellow-400 focus:outline-none focus:ring-yellow-400 focus:ring-offset-2 disabled:cursor-not-allowed  px-4 py-2 md:px-5 md:py-2.5 text-sm"
+              />
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }
 
-export default OrderForm;
+export default OrderStatus;

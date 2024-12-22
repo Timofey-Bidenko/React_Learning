@@ -5,12 +5,7 @@ import Counter from "./Counter";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 
-function capitalize(str) {
-  return str
-    .split(" ")
-    .map((word) => word[0].toUpperCase() + word.slice(1))
-    .join(" ");
-}
+import capitalize from "../utils/capitalize";
 
 function Item({ itemInfo }) {
   const name = itemInfo.name ?? "ItemName";

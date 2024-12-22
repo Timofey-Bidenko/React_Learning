@@ -5,6 +5,7 @@ function Button({
   ariaLabel = "Button",
   text = "Click",
   type = "",
+  disabled = undefined,
 }) {
   return (
     <button
@@ -13,6 +14,7 @@ function Button({
       style={{ display: visible ? "block" : "none" }}
       aria-label={ariaLabel}
       type={type}
+      disabled={disabled}
     >
       {text}
     </button>
