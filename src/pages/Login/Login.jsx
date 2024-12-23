@@ -1,10 +1,10 @@
-import Input from "../components/Input";
-import Button from "../components/Button";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 import { useNavigate } from "react-router";
 import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../../context/UserContext";
 
-import "../Login.css";
+import "./Login.css";
 
 function LoginPage() {
   const { setUsername } = useContext(UserContext);

@@ -1,12 +1,11 @@
-import { cartItems as data } from "../CartData";
-import CartItems from "../components/CartItems";
-import CartActions from "../components/CartActions";
+import CartItems from "../../components/CartItems";
+import CartActions from "../../components/CartActions";
 import { NavLink } from "react-router";
 import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
-import { CartContext } from "../context/CartContext";
+import { UserContext } from "../../context/UserContext";
+import { CartContext } from "../../context/CartContext";
 
-import "../Cart.css";
+import "./Cart.css";
 
 function CartPage() {
   const { username } = useContext(UserContext);
@@ -20,10 +19,10 @@ function CartPage() {
         <h1 className="cart-title">
         Your cart{username ? ", " + username.toLowerCase() : " ⤵️"}
       </h1>
-      <CartItems data={data} />
+      <CartItems />
       <CartActions />
       </>) : (
-        <p class="mt-4 text-center font-semibold">Your cart is still empty. Start adding some pizzas :)</p>
+        <p className="mt-4 text-center font-semibold">Your cart is still empty. Start adding some pizzas :)</p>
         )}
     </div>
   );

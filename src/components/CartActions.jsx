@@ -1,21 +1,14 @@
-import Button from "./Button";
 import { useNavigate } from "react-router";
-
 import { useContext } from "react";
+import Button from "./Button";
 import { CartContext } from "../context/CartContext";
 
 function CartActions() {
   const navigate = useNavigate();
+  const { dispatch } = useContext(CartContext);
 
-  const { cart, dispatchCart } = useContext(CartContext);
-
-  function goToOrder() {
-    navigate("/order");
-  }
-
-  function clearCart() {
-    dispatchCart({ type: "Clear" });
-  }
+  const goToOrder = () => navigate("/order");
+  const clearCart = () => dispatch({ type: "Clear" });
   
   return (
     <div className="cart-actions">

@@ -1,14 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
-import useFetch from "../hooks/useFetch";
-import useIsoDate from "../hooks/useIsoDate";
-import capitalize from "../utils/capitalize";
-import Button from "../components/Button";
+import useFetch from "../../hooks/useFetch";
+import useIsoDate from "../../hooks/useIsoDate";
+import capitalize from "../../utils/capitalize";
+import Button from "../../components/Button";
 
 // import { useContext } from "react";
 // import { UserContext } from "../context/UserContext";
 
-import "../OrderStatus.css";
+import "./OrderStatus.css";
 
 function OrderStatus() {
   const { id } = useParams();

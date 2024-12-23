@@ -5,30 +5,22 @@ import { CartContext } from "../context/CartContext";
 
 function CartItem({ itemInfo }) {
   const name = itemInfo.name ?? "ItemName";
-  const price = itemInfo.price ? parseInt(itemInfo.price) : 123;
-  const quantity = itemInfo.quantity ? parseInt(itemInfo.quantity) : 1;
+  const price = "price" in itemInfo ? parseInt(itemInfo.price) : 123;
+  const quantity = "quantity" in itemInfo ? parseInt(itemInfo.quantity) : 1;
   const itemId = itemInfo.id;
 
-  const { dispatchCart } = useContext(CartContext);
+  const { dispatch } = useContext(CartContext);
 
-  const handleRemove = () => {
-    dispatchCart({ type: "Remove", payload: {id: itemId}});
-  }
-  const handleIncrement = () => {
-    dispatchCart({
+  const handleRemove = () => dispatch({ type: "Remove", payload: {id: itemId}});
+  const handleIncrement = () => dispatch(
+    {
       type: "Increment",
       payload: {
         id: itemId
       }
-    })
-  };
-  const handleDecrement = () => {
-    if (quantity === 1) {
-      handleRemove()
-    } else {
-      dispatchCart({ type: "Decrement", payload: {id: itemId}});
     }
-  };
+  );
+  const handleDecrement = () => dispatch({ type: "Decrement", payload: {id: itemId}});
   
   return (
     <div className="cart-item">

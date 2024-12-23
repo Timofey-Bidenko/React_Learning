@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Item from "../components/Item";
+import Item from "../../components/Item";
 
-import "../Menu.css";
+import "./Menu.css";
 
 function MenuPage() {
   const [data, setData] = useState([]);

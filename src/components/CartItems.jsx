@@ -8,7 +8,7 @@ function CartItems() {
 
   return (
     <div className="cart-items">
-      {cart.map((itemInfo) => (
+      {cart.map((itemInfo) => itemInfo && "id" in itemInfo && (
         <CartItem itemInfo={itemInfo} key={itemInfo.id} />
       ))}
     </div>
