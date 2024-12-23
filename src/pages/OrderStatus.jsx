@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import useFetch from "../hooks/useFetch";
 import useIsoDate from "../hooks/useIsoDate";
 import capitalize from "../utils/capitalize";
@@ -12,67 +12,64 @@ import "../OrderStatus.css";
 
 function OrderStatus() {
   const { id } = useParams();
-  const url = "https://react-fast-pizza-api.onrender.com/api/order/" + id;
-  const [data, error, isLoading] = useFetch(url);
+  const url = `https://react-fast-pizza-api.onrender.com/api/order/${id}`;
+  const [fetchData, error, isLoading] = useFetch(url);
 
-  const [estimatedDeliveryTime, setEstimatedDeliveryTime] = useState(null);
   const [timeLeft, setTimeLeft] = useState("");
   const [showError, setShowError] = useState(false);
   const [onCooldown, setOnCooldown] = useState(false);
-  const [isPriority, setIsPriority] = useState(false);
+  const [data, setData] = useState(fetchData);
+  useEffect(() => setData(fetchData), [fetchData])
 
   const [menuData, menuError, menuLoading] = useFetch(
     "https://react-fast-pizza-api.onrender.com/api/menu"
   ); // use menu data to get pizza ingredients
 
-  // Update estimatedDeliveryTime when data changes
+  const estimatedDelivery = data ? data.data.estimatedDelivery : null;
+  const [formattedDate, dateError, dateLoading] = useIsoDate(estimatedDelivery);
+  const timeLeftString = useMemo(() => {
+    if (!estimatedDelivery) return null;
+  
+    const deliveryDate = new Date(estimatedDelivery);
+    const currentDate = new Date();
+    const timeDiff = deliveryDate - currentDate;
+  
+    if (timeDiff > 0) {
+      const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      return`${
+        hours > 0 ? `${hours} ` + (hours % 10 === 1 ? "hour" : "hours") : ""
+      } ${minutes} ${minutes % 10 === 1 ? "minute" : "minutes"}`;
+    } else {
+      return false;
+    }
+  }, [estimatedDelivery]);
   useEffect(() => {
-    if (data?.data?.estimatedDelivery) {
-      setEstimatedDeliveryTime(data.data.estimatedDelivery);
+    if (timeLeftString) {
+      setTimeLeft(`Only ${timeLeftString} left 😃`);
+    } else {
+      setTimeLeft("Order should have arrived");
     }
-    if (data?.data?.priority) {
-      setIsPriority(data.data.priority);
-    }
-  }, [data]);
-  const [formattedDate, dateError, dateLoading] = useIsoDate(
-    estimatedDeliveryTime
-  );
-
-  useEffect(() => {
-    if (estimatedDeliveryTime) {
-      const deliveryDate = new Date(estimatedDeliveryTime);
-      const currentDate = new Date();
-      const timeDiff = deliveryDate - currentDate;
-
-      if (timeDiff > 0) {
-        const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-        const timeLeftString = `${
-          hours > 0 ? `${hours} ` + (hours % 10 === 1 ? "hour" : "hours") : ""
-        } ${minutes} ${minutes % 10 === 1 ? "minute" : "minutes"}`;
-        setTimeLeft(`Only ${timeLeftString} left 😃`);
-      } else {
-        setTimeLeft("Order should have arrived");
-      }
-    }
-  }, [estimatedDeliveryTime]);
+  }, [timeLeftString]);  
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
-  if (error || !data || !data.data) {
+  if (error) {
     return <p className="error">Something went wrong. Please try again.</p>;
   }
+  if (!data || !data.data) {
+    return <p className="error">Order not found</p>;
+  }
 
-  const { customer, status, priority, cart, orderPrice, priorityPrice } = data.data;
+  const { priority, status, cart, orderPrice, priorityPrice } = data.data;
 
   async function prioritize() {
     setOnCooldown(true);
     setShowError(false);
 
     const response = await fetch(
-      "https://react-fast-pizza-api.onrender.com/api/order/" + id,
+      url,
       {
         method: "PATCH",
         headers: {
@@ -87,12 +84,13 @@ function OrderStatus() {
     const responseData = await response.json();
 
     if (responseData.status === "success") {
-      setIsPriority(responseData.data.priority);
+      setData(responseData);
     } else {
       setShowError(true);
       setOnCooldown(false);
     }
   }
+
   return (
     <div className="container">
       {!isLoading && (
@@ -102,7 +100,7 @@ function OrderStatus() {
               Order #{id} status: {status}
             </h1>
             <div className="badges">
-              {isPriority && (
+              {priority && (
                 <span className="badge badge-priority">PRIORITY</span>
               )}
               <span className="badge badge-preparing">
@@ -148,7 +146,7 @@ function OrderStatus() {
               <span className="price-label">Price pizza:</span>
               <span className="price-value">€{orderPrice}.00</span>
             </div>
-            {isPriority && (
+            {priority && (
               <div className="price-item">
                 <span className="price-label">Price priority:</span>
                 <span className="price-value">€{priorityPrice}.00</span>
@@ -157,12 +155,12 @@ function OrderStatus() {
             <div className="price-item">
               <span className="price-label">To pay on delivery:</span>
               <span className="price-value">
-                €{orderPrice + (isPriority ? priorityPrice : 0)}.00
+                €{orderPrice + (priority ? priorityPrice : 0)}.00
               </span>
             </div>
           </div>
 
-          {!isPriority && !onCooldown && (
+          {!priority && !onCooldown && (
             <>
               {showError && (
                 <p className="error">Something went wrong. Please try again.</p>
