@@ -3,6 +3,8 @@ import { createContext, useReducer } from "react";
 export const CartContext = createContext(null);
 
 function cartReducer(state, action) {
+  console.log(action.payload);
+  
   function updateQuantity(delta) {
     const newState = state.map((item) => {
       if (!item || item.id !== action.payload.id) {
@@ -32,7 +34,7 @@ function cartReducer(state, action) {
       return updateQuantity(-1);
     case "Remove":
       return state.filter(
-        (item) => "id" in item || item.id !== action.payload.id
+        (item) => !("id" in item) || item.id !== action.payload.id
       );
     case "Clear":
       return [];
@@ -46,7 +48,15 @@ function CartContextProvider({ children }) {
 
   const cartValue = {
     cart: cart,
-    dispatch: dispatch,
+    addItem: (item) => dispatch({ type: "Add", payload: {
+      name: item.name,
+      id: item.id,
+      price: item.unitPrice,
+    } }),
+    incrementItem: (id) => dispatch({ type: "Increment", payload: { id } }),
+    decrementItem: (id) => dispatch({ type: "Decrement", payload: { id } }),
+    removeItem: (id) => dispatch({ type: "Remove", payload: { id } }),
+    clear: () => dispatch({ type: "Clear" }),
   };
 
   return (

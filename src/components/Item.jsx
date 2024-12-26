@@ -13,19 +13,12 @@ function Item({ itemInfo }) {
   const ingredients = capitalize(itemInfo.ingredients.join(", "));
   const itemId = itemInfo.id;
 
-  const { cart, dispatch } = useContext(CartContext);
+  const { cart, addItem, incrementItem, decrementItem } = useContext(CartContext);
   const amount = cart.find((item) => item.id === itemId)?.quantity ?? 0;
 
-  const addToCart = () => dispatch({ 
-    type: "Add", 
-    payload: {
-      name: itemInfo.name,
-      id: itemId,
-      price: itemInfo.unitPrice,
-    } 
-  });
-  const handleIncrement = () => dispatch({ type: "Increment", payload: {id: itemId}});
-  const handleDecrement = () => dispatch({ type: "Decrement", payload: {id: itemId}});
+  const addToCart = () => addItem(itemInfo);
+  const handleIncrement = () => incrementItem(itemId);
+  const handleDecrement = () => decrementItem(itemId);
 
   return (
     <div className="pizza-item">

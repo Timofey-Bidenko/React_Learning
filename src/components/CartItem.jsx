@@ -9,19 +9,12 @@ function CartItem({ itemInfo }) {
   const quantity = "quantity" in itemInfo ? parseInt(itemInfo.quantity) : 1;
   const itemId = itemInfo.id;
 
-  const { dispatch } = useContext(CartContext);
+  const { incrementItem, decrementItem, removeItem } = useContext(CartContext);
 
-  const handleRemove = () => dispatch({ type: "Remove", payload: {id: itemId}});
-  const handleIncrement = () => dispatch(
-    {
-      type: "Increment",
-      payload: {
-        id: itemId
-      }
-    }
-  );
-  const handleDecrement = () => dispatch({ type: "Decrement", payload: {id: itemId}});
-  
+  const handleRemove = () => removeItem(itemId);
+  const handleIncrement = () => incrementItem(itemId);
+  const handleDecrement = () => decrementItem(itemId);
+
   return (
     <div className="cart-item">
       <span className="quantity-text">{quantity}×</span>
