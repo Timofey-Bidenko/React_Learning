@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import CircularLoading from "./components/CircularLoading";
 
-import LoginPage from "./pages/Login/Login";
-import MenuPage from "./pages/Menu/Menu";
-import CartPage from "./pages/Cart/Cart";
-import OrderForm from "./pages/OrderForm/OrderForm";
-import OrderStatus from "./pages/OrderStatus/OrderStatus";
+const LazyLoginPage = lazy(() => import("./pages/Login/Login"));
+const LazyMenuPage = lazy(() => import("./pages/Menu/Menu"));
+const LazyCartPage = lazy(() => import("./pages/Cart/Cart"));
+const LazyOrderForm = lazy(() => import("./pages/OrderForm/OrderForm"));
+const LazyOrderStatus = lazy(() => import("./pages/OrderStatus/OrderStatus"));
 
 import "./index.css";
 import Header from "./components/Header";
@@ -19,12 +21,12 @@ function App() {
         <CartContextProvider>
           <Header />
           <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/menu" element={<MenuPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/order" element={<OrderForm />} />
-            <Route path="/orders/:id" element={<OrderStatus />} />
-            <Route path="*" element={<LoginPage />} />
+            <Route path="/" element={<Suspense fallback={<CircularLoading />}><LazyLoginPage /></Suspense>} />
+            <Route path="/menu" element={<Suspense fallback={<CircularLoading />}><LazyMenuPage /></Suspense>} />
+            <Route path="/cart" element={<Suspense fallback={<CircularLoading />}><LazyCartPage /></Suspense>} />
+            <Route path="/order" element={<Suspense fallback={<CircularLoading />}><LazyOrderForm /></Suspense>} />
+            <Route path="/orders/:id" element={<Suspense fallback={<CircularLoading />}><LazyOrderStatus /></Suspense>} />
+            <Route path="*" element={<Suspense fallback={<CircularLoading />}><LazyLoginPage /></Suspense>} />
           </Routes>
         </CartContextProvider>
       </UserContextProvider>
